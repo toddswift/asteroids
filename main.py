@@ -13,13 +13,12 @@ def main():
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     
-    # create an infinite loop to keep the window open
-    while True: 
+    while True: # this is the main loop which is infinite until the user does a control-c
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return
-        screen.fill(("black"))
-        pygame.display.flip()
+            if event.type == pygame.QUIT:   # if the user clicks the close button
+                return # exit the program
+        screen.fill(("black")) # fill the screen with black
+        pygame.display.flip() # update the display
     
 
     

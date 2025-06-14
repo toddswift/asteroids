@@ -3,6 +3,9 @@
 # throughout this file
 import pygame
 from constants import *
+from player import Player
+
+
 
 def main():
     pygame.init()
@@ -13,14 +16,24 @@ def main():
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     
+    clock = pygame.time.Clock() # create a clock object to control the frame rate
+    dt = 0 # delta time, the time since the last frame  
+
+    # instantiate a Player object
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    
     while True: # this is the main loop which is infinite until the user does a control-c
         for event in pygame.event.get():
             if event.type == pygame.QUIT:   # if the user clicks the close button
                 return # exit the program
-        screen.fill(("black")) # fill the screen with black
-        pygame.display.flip() # update the display
-    
+        screen.fill(("black")) # fill the screen with black  
+        
+        player.draw(screen) #draw the player
 
+        pygame.display.flip() # update the display
+        
+        dt = clock.tick(60) / 1000.0 # convert milliseconds to seconds
+        
     
 if __name__ == "__main__":
     main()

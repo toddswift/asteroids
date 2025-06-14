@@ -1,52 +1,40 @@
-# this allows us to use code from
-# the open-source pygame library
-# throughout this file
 import pygame
 from constants import *
 from player import Player
 
 
-
 def main():
     pygame.init()
-
-    print("Starting Asteroids!")
-    print(f"Screen width: {SCREEN_WIDTH}")
-    print(f"Screen height: {SCREEN_HEIGHT}")
-
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    
     clock = pygame.time.Clock() # create a clock object to control the frame rate
-    dt = 0 # delta time, the time since the last frame  
-  
-    # create sprite groups
-    updatable_group = pygame.sprite.Group()
+    
+    updatable_group = pygame.sprite.Group() # create sprite groups
     drawable_group = pygame.sprite.Group()
 
-    # add the player to the groups
-    Player.containers = (updatable_group, drawable_group)
-
-    # instantiate a Player object
-    Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    Player.containers = (updatable_group, drawable_group) # add the player to the groups
     
-    # infinite game loop   
+    Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) # instantiate a Player object
+
+    dt = 0 # delta time, the time since the last frame  
+  
     while True: # this is the main loop which is infinite until the user does a control-c
         for event in pygame.event.get():
             if event.type == pygame.QUIT:   # if the user clicks the close button
                 return # exit the program
+        
+        updatable_group.update(dt) # update all updatable sprites
+
         screen.fill(("black")) # fill the screen with black  
 
-        # update all updatable sprites
-        updatable_group.update(dt)
-
-        # draw all drawable sprites
-        for sprite in drawable_group:
+        for sprite in drawable_group: # draw all drawable sprites
             sprite.draw(screen)
 
         pygame.display.flip() # update the display
         
-        dt = clock.tick(60) / 1000.0 # convert milliseconds to seconds
+        # limit the frame rate to 60 FPS and get the time since the last frame
+        dt = clock.tick(60) / 1000.0 
         
     
+
 if __name__ == "__main__":
     main()

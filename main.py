@@ -27,7 +27,10 @@ def main():
             if event.type == pygame.QUIT:   # if the user clicks the close button
                 return # exit the program
         screen.fill(("black")) # fill the screen with black  
-        
+
+        # rotate the player
+        player.update(dt)
+
         player.draw(screen) #draw the player
 
         pygame.display.flip() # update the display

@@ -18,20 +18,30 @@ def main():
     
     clock = pygame.time.Clock() # create a clock object to control the frame rate
     dt = 0 # delta time, the time since the last frame  
+  
+    # create sprite groups
+    updatable_group = pygame.sprite.Group()
+    drawable_group = pygame.sprite.Group()
+
+    # add the player to the groups
+    Player.containers = (updatable_group, drawable_group)
 
     # instantiate a Player object
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     
+    # infinite game loop   
     while True: # this is the main loop which is infinite until the user does a control-c
         for event in pygame.event.get():
             if event.type == pygame.QUIT:   # if the user clicks the close button
                 return # exit the program
         screen.fill(("black")) # fill the screen with black  
 
-        # rotate the player
-        player.update(dt)
+        # update all updatable sprites
+        updatable_group.update(dt)
 
-        player.draw(screen) #draw the player
+        # draw all drawable sprites
+        for sprite in drawable_group:
+            sprite.draw(screen)
 
         pygame.display.flip() # update the display
         

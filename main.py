@@ -1,4 +1,7 @@
 import pygame
+import asteroidfield
+import sys
+from asteroid import Asteroid
 from constants import *
 from player import Player
 
@@ -10,10 +13,17 @@ def main():
     
     updatable_group = pygame.sprite.Group() # create sprite groups
     drawable_group = pygame.sprite.Group()
+    asteroid_group = pygame.sprite.Group()
 
     Player.containers = (updatable_group, drawable_group) # add the player to the groups
+    Asteroid.containers = (updatable_group, drawable_group, asteroid_group) # add the asteroids to the groups
+
+    # set the static containers field of the AsteroidField class to only the updatable group
+    asteroidfield.AsteroidField.containers = (updatable_group)
+
     
-    Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) # instantiate a Player object
+    asteroid_field = asteroidfield.AsteroidField() # instantiate an AsteroidField object
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) # instantiate a Player object
 
     dt = 0 # delta time, the time since the last frame  
   
@@ -23,6 +33,15 @@ def main():
                 return # exit the program
         
         updatable_group.update(dt) # update all updatable sprites
+
+        # iterate over all asteroid sprites and check for collisions
+        for asteroid in asteroid_group:
+
+            # check if any asteroid collides with the Player object instance
+            if asteroid.collides_with(player):
+                # exit the game
+                sys.exit("Game Over!")
+
 
         screen.fill(("black")) # fill the screen with black  
 

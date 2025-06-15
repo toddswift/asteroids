@@ -4,7 +4,7 @@ import sys
 from asteroid import Asteroid
 from constants import *
 from player import Player
-
+from circleshape import Shot
 
 def main():
     pygame.init()
@@ -14,9 +14,13 @@ def main():
     updatable_group = pygame.sprite.Group() # create sprite groups
     drawable_group = pygame.sprite.Group()
     asteroid_group = pygame.sprite.Group()
+    
+    # Create a new group to contain all the shots
+    shot_group = pygame.sprite.Group()
 
     Player.containers = (updatable_group, drawable_group) # add the player to the groups
     Asteroid.containers = (updatable_group, drawable_group, asteroid_group) # add the asteroids to the groups
+    Shot.containers = (updatable_group, drawable_group, shot_group) # add the shots to the groups
 
     # set the static containers field of the AsteroidField class to only the updatable group
     asteroidfield.AsteroidField.containers = (updatable_group)
@@ -33,6 +37,11 @@ def main():
                 return # exit the program
         
         updatable_group.update(dt) # update all updatable sprites
+
+        # Remove shots that are off-screen
+        for shot in shot_group:
+            if not shot.is_alive:
+                shot.kill()
 
         # iterate over all asteroid sprites and check for collisions
         for asteroid in asteroid_group:

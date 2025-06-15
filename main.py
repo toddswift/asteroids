@@ -51,6 +51,14 @@ def main():
                 # exit the game
                 sys.exit("Game Over!")
 
+            # check if any asteroid collides with any shot object instance
+            for shot in shot_group:
+                if asteroid.collides_with(shot):
+                    # remove or split the asteroid and the shot immediately
+                    asteroid.split() # split the asteroid into two smaller asteroids unless it's already small enough
+                    shot.kill()
+                    #shot.is_alive = False
+
 
         screen.fill(("black")) # fill the screen with black  
 
